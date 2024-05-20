@@ -1,0 +1,83 @@
+---
+- name: router
+  alias: unify
+  ip: 10.0.96.1
+  ansible:
+    skip: true
+    user: root
+    key_path: default
+  type: hardware
+  groups:
+    - infrastructure
+  dns:
+    type: A
+- name: disk
+  alias: synology
+  ip: 10.0.96.2
+  ansible:
+    skip: true
+    user: jim
+    key_path: ~/.ssh/id_ed25519
+  type: hardware
+  groups:
+    - storage
+    - infrastructure
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: clock
+  ip: 10.0.96.3
+  ansible:
+    user: jim
+    key_path: default
+  type: hardware
+  groups:
+    - pi
+    - debian
+- name: acme-runner
+  ip: 10.0.96.4
+  ansible:
+    user: root
+    key_path: default
+  type: lxc
+  node: pve3
+  groups:
+    - lxc
+    - infrastructure
+    - debian
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: lb
+  ip: 10.0.96.5
+  ansible:
+    user: root
+    domain: home.thejimnicholson.com
+    key_path: default
+  type: lxc
+  node: pve3
+  groups:
+    - infrastructure
+- name: zyxel
+  ip: 10.0.96.7
+  ansible:
+    skip: true
+  type: hardware
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+  groups:
+    - switches
+- name: ac001
+  ip: 10.0.96.51
+  ansible:
+    user: admin
+    key_PATH: default
+  type: vm
+  groups:
+    - kubernetes
+    - k3s
+    - primary
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
