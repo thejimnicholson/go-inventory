@@ -10,7 +10,7 @@ func Generate(hosts []inventory.Host) (string, error) {
     inventory := make(map[string]map[string][]string)
 
     for _, host := range hosts {
-        if !host.Ansible.Skip {
+        if !host.SSH.Skip {
             for _, group := range host.Groups {
                 if _, ok := inventory[group]; !ok {
                     inventory[group] = make(map[string][]string)

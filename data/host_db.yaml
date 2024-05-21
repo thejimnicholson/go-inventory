@@ -2,11 +2,12 @@
 - name: router
   alias: unify
   ip: 10.0.96.1
-  ansible:
+  ssh:
     skip: true
     user: root
     key_path: default
-  type: hardware
+  meta:
+    type: hardware
   groups:
     - infrastructure
   dns:
@@ -14,11 +15,12 @@
 - name: disk
   alias: synology
   ip: 10.0.96.2
-  ansible:
+  ssh:
     skip: true
     user: jim
     key_path: ~/.ssh/id_ed25519
-  type: hardware
+  meta:
+    type: hardware
   groups:
     - storage
     - infrastructure
@@ -27,20 +29,23 @@
     domain: home.thejimnicholson.com
 - name: clock
   ip: 10.0.96.3
-  ansible:
+  ssh:
     user: jim
     key_path: default
-  type: hardware
+  meta:
+    type: hardware
   groups:
     - pi
     - debian
 - name: acme-runner
   ip: 10.0.96.4
-  ansible:
+  ssh:
     user: root
     key_path: default
-  type: lxc
-  node: pve3
+  meta:
+    type: lxc
+    host: pve3
+    id: 101
   groups:
     - lxc
     - infrastructure
@@ -50,34 +55,408 @@
     domain: home.thejimnicholson.com
 - name: lb
   ip: 10.0.96.5
-  ansible:
+  ssh:
     user: root
-    domain: home.thejimnicholson.com
     key_path: default
-  type: lxc
-  node: pve3
+  meta:
+    type: lxc
+    host: pve3
+    id: 107
   groups:
     - infrastructure
 - name: zyxel
   ip: 10.0.96.7
-  ansible:
+  ssh:
     skip: true
-  type: hardware
+  meta:
+    type: hardware
   dns:
     type: A
     domain: home.thejimnicholson.com
   groups:
     - switches
+- name: pve
+  ip: 10.0.96.10
+  ssh:
+    user: root
+    key_path: default
+  meta:
+    type: hardware
+  groups:
+    - infrastructure
+    - proxmox
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: pve2
+  ip: 10.0.96.11
+  ssh:
+    user: root
+    key_path: default
+  groups:
+    - infrastructure
+    - proxmox
+  meta:
+    type: hardware
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: pve3
+  ip: 10.0.96.13
+  ssh:
+    user: root
+    key_path: default
+  groups:
+    - infrastructure
+    - proxmox
+  meta:
+    type: hardware
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: truenas
+  ip: 10.0.96.14
+  ssh:
+    user: root
+    key_path: default
+  groups:
+    - infrastructure
+  meta:
+    type: hardware
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: pve5
+  ip: 10.0.96.15
+  ssh:
+    user: root
+    key_path: default
+  groups:
+    - infrastructure
+    - proxmox
+  meta:
+    type: hardware
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+
+- name: builder00
+  ip: 10.0.96.20
+  ssh:
+    key_path: default
+    user: jim
+  meta:
+    type: vm
+    host: pve5
+    id: 5001
+  groups:
+    - debian
+    - builders
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: builder01
+  ip: 10.0.96.21
+  ssh:
+    key_path: default
+    user: admin
+  meta:
+    type: vm
+    host: pve
+    id: 5002
+  groups:
+    - microos
+    - builders
+  dns:
+    type: A
+    domain: home.thejimnicholson.com    
+- name: builder02
+  ip: 10.0.96.22
+  ssh:
+    key_path: default
+    user: root
+  meta:
+    type: vm
+    host: pve2
+    id: 5003
+  groups:
+    - centos
+    - builders
+  dns:
+    type: A
+    domain: home.thejimnicholson.com    
+- name: builder03
+  ip: 10.0.96.23
+  ssh:
+    key_path: default
+    user: root
+  meta:
+    type: vm
+    host: pve3
+    id: 5004
+  groups:
+    - centos
+    - builders
+  dns:
+    type: A
+    domain: home.thejimnicholson.com    
+- name: builder04
+  ip: 10.0.96.24
+  ssh:
+    key_path: default
+    user: jim
+  meta:
+    type: vm
+    host: pve3
+    id: 5005
+  groups:
+    - ubuntu
+    - builders
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: dns01
+  ip: 10.0.96.30
+  ssh: 
+    user: root
+    key_path: default
+  meta:
+    type: lxc
+    host: pve3
+    id: 108
+  groups:
+    - infrastructure
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
 - name: ac001
   ip: 10.0.96.51
-  ansible:
+  ssh:
     user: admin
-    key_PATH: default
-  type: vm
+    key_path: default
+  meta:
+    type: vm
+    host: pve
+    id: 2001
   groups:
     - kubernetes
     - k3s
     - primary
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: ac002
+  ip: 10.0.96.52
+  ssh:
+    user: admin
+    key_path: default
+  meta:
+    type: vm
+    host: pve2
+    id: 2002
+  groups:
+    - kubernetes
+    - k3s
+    - control_plane
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: ac003
+  ip: 10.0.96.53
+  ssh:
+    user: admin
+    key_path: default
+  meta:
+    type: vm
+    host: pve3
+    id: 2003
+  groups:
+    - kubernetes
+    - k3s
+    - control_plane
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: ac004
+  ip: 10.0.96.54
+  ssh:
+    user: admin
+    key_path: default
+  meta:
+    type: vm
+    host: pve
+    id: 2004
+  groups:
+    - kubernetes
+    - k3s
+    - worker
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: ac005
+  ip: 10.0.96.55
+  ssh:
+    user: admin
+    key_path: default
+  meta:
+    type: vm
+    host: pve2
+    id: 2005
+  groups:
+    - kubernetes
+    - k3s
+    - worker
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: ac006
+  ip: 10.0.96.56
+  ssh:
+    user: admin
+    key_path: default
+  meta:
+    type: vm
+    host: pve3
+    id: 2006
+  groups:
+    - kubernetes
+    - k3s
+    - worker
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: talos01
+  ip: 10.0.96.41
+  ssh:
+    user: none
+    key_path: default
+    skip: true
+  meta:
+    type: vm
+    host: pve
+    id: 3001
+  groups:
+    - talos
+    - control_plane
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: talos02
+  ip: 10.0.96.42
+  ssh:
+    user: none
+    key_path: default
+    skip: true
+  meta:
+    type: vm
+    host: pve2
+    id: 3002
+  groups:
+    - talos
+    - control_plane
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: talos03
+  ip: 10.0.96.43
+  ssh:
+    user: none
+    key_path: default
+    skip: true
+  meta:
+    type: vm
+    host: pve3
+    id: 3003
+  groups:
+    - talos
+    - control_plane
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: talos04
+  ip: 10.0.96.44
+  ssh:
+    user: none
+    key_path: default
+    skip: true
+  meta:
+    type: vm
+    host: pve
+    id: 3004
+  groups:
+    - talos
+    - control_plane
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: talos05
+  ip: 10.0.96.45
+  ssh:
+    user: none
+    key_path: default
+  meta:
+    type: vm
+    host: pve2
+    id: 3005
+  groups:
+    - talos
+    - control_plane
+    - skip_ansible
+  dns:
+    type: AA
+    domain: home.thejimnicholson.com
+- name: talos06
+  ip: 10.0.96.46
+  ssh:
+    user: none
+    key_path: default
+  meta:
+    type: vm
+    host: pve5
+    id: 3006
+  groups:
+    - talos
+    - control_plane
+    - skip_ansible
+- name: vault01
+  ip: 10.0.96.61
+  ssh:
+    user: root
+    key_path: default
+  meta:
+    type: lxc
+    host: pve
+    id: 103
+  groups:
+    - vault
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: vault02
+  ip: 10.0.96.62
+  ssh:
+    user: root
+    key_path: default
+  meta:
+    type: lxc
+    host: pve3
+    id: 104
+  groups:
+    - vault
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
+- name: vault03
+  ip: 10.0.96.63
+  ssh:
+    user: root
+    key_path: default
+  meta:
+    type: lxc
+    host: pve2
+    id: 103
+  groups:
+    - vault
   dns:
     type: A
     domain: home.thejimnicholson.com

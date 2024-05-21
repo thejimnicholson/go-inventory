@@ -11,11 +11,17 @@ const sshConfigTemplate = `
 {{- range . }}
 Host {{ .Name }}
     HostName {{ .IP }}
-    User {{ .Ansible.User }}
+    User {{ .SSH.User }}
+    {{- if ne .SSH.KeyPath "default" }}
+    IdentityFile {{ .SSH.KeyPath }}
+    {{- end }}
     {{- if .Alias }}
 Host {{ .Alias }}
     HostName {{ .IP }}
-    User {{ .Ansible.User }}
+    User {{ .SSH.User }}
+    {{- if ne .SSH.KeyPath "default" }}
+    IdentityFile {{ .SSH.KeyPath }}
+    {{- end }}
 {{- end }}
 {{- end }}
 `

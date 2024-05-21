@@ -14,21 +14,31 @@ var (
     mu    sync.Mutex
 )
 
-type Host struct {
-    Name    string `json:"name" yaml:"name"`
-    Alias   string `json:"alias" yaml:"alias"`
-    IP      string `json:"ip" yaml:"ip"`
-    Ansible struct {
-        Skip    bool   `json:"skip" yaml:"skip"`
-        User    string `json:"user" yaml:"user"`
-        KeyPath string `json:"key_path" yaml:"key_path"`
-    } `json:"ansible" yaml:"ansible"`
+type SSH struct {
+    Skip    bool   `json:"skip" yaml:"skip"`
+    User    string `json:"user" yaml:"user"`
+    KeyPath string `json:"key_path" yaml:"key_path"`
+}
+
+type Meta struct {
     Type   string   `json:"type" yaml:"type"`
+    Host   string   `json:"host" yaml:"host"`
+    ID     string   `json:"id" yaml:"id"`
+}
+
+type DNS struct {
+    Type   string `json:"type" yaml:"type"`
+    Domain string `json:"domain" yaml:"domain"`
+}
+
+type Host struct {
+    Name   string   `json:"name" yaml:"name"`
+    Alias  string   `json:"alias" yaml:"alias"`
+    IP     string   `json:"ip" yaml:"ip"`
+    SSH    SSH      `json:"ssh" yaml:"ssh"`
+    Meta   Meta     `json:"meta" yaml:"meta"`
     Groups []string `json:"groups" yaml:"groups"`
-    DNS    struct {
-        Type   string `json:"type" yaml:"type"`
-        Domain string `json:"domain" yaml:"domain"`
-    } `json:"dns" yaml:"dns"`
+    DNS    DNS      `json:"dns" yaml:"dns"`
 }
 
 func LoadFromFile(filename string) ([]Host, error) {
@@ -95,7 +105,7 @@ func GetHostsByType(hostType string) []Host {
     defer mu.Unlock()
     var hostsByType []Host
     for _, host := range hosts {
-        if host.Type == hostType {
+        if host.Meta.Type == hostType {
             hostsByType = append(hostsByType, host)
         }
     }
