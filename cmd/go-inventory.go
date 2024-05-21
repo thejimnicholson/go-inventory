@@ -53,8 +53,11 @@ func main() {
     }
 
     if *hostPtr != "" {
-        host := inventory.GetHostByName(*hostPtr)
-        printAsJSON(host)
+        hostData, err := ansible.HostData(*hostPtr)
+         if err != nil {
+            log.Fatalf("error: %v", err)
+        }
+        fmt.Println(hostData)
     }
     if *groupPtr != "" {
         hosts := inventory.GetHostsByGroup(*groupPtr)
