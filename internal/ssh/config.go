@@ -9,6 +9,7 @@ import (
 
 const sshConfigTemplate = `
 {{- range . }}
+{{- if not .SSH.Skip }}
 Host {{ .Name }}
     HostName {{ .IP }}
     User {{ .SSH.User }}
@@ -22,6 +23,7 @@ Host {{ .Alias }}
     {{- if ne .SSH.KeyPath "default" }}
     IdentityFile {{ .SSH.KeyPath }}
     {{- end }}
+{{- end }}
 {{- end }}
 {{- end }}
 `
