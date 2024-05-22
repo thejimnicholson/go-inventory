@@ -5,3 +5,6 @@ bin/go-inventory: $(wildcard *.go)
 
 test:
 	go test -v ./...
+
+clean:
+	rm bin/go-inventory
