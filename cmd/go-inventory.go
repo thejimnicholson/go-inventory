@@ -13,6 +13,8 @@ import (
 	"go-inventory/internal/ssh"
 )
 
+var Version = "development"
+
 func printAsJSON(v interface{}) {
     value, err := json.MarshalIndent(v, "", "  ")
     if err != nil {
@@ -27,8 +29,16 @@ func main() {
     groupPtr := flag.String("group", "", "Specify the group name")
     typePtr := flag.String("type", "", "Specify the type")
     sshPtr := flag.Bool("ssh", false, "Print ssh config file")
+    version := flag.BoolP("version","v", false, "prints current version")
+
 
     flag.Parse()
+
+    if *version {
+        fmt.Println(Version)
+        return
+    }
+
 
     hosts, err := inventory.LoadFromFile("./data/host_db.yaml")
 
