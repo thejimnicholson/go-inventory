@@ -48,7 +48,7 @@ func HostData(name string) (string, error) {
     data["dns"] = host.DNS
 
     // Convert the map to JSON
-    jsonData, err := json.Marshal(data)
+    jsonData, err := json.MarshalIndent(data, "", "  ") 
     if err != nil {
         return "", fmt.Errorf("failed to marshal host data to JSON: %w", err)
     }
