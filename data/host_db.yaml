@@ -75,6 +75,29 @@
     domain: home.thejimnicholson.com
   groups:
     - switches
+- name: ptolemy
+  ip: 10.0.96.8
+  ssh:
+    user: jim
+    key_path: default
+  meta:
+    type: hardware
+  groups:
+    - infrastructure
+    - debian
+- name: info
+  ip: 10.0.96.9
+  ssh:
+    user: jim
+    key_path: default
+  meta:
+    type: hardware
+  groups:
+    - infrastructure
+    - pi
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
 - name: pve
   ip: 10.0.96.10
   ssh:
