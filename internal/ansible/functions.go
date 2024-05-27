@@ -7,7 +7,7 @@ import (
 	"go-inventory/internal/inventory"
 )
 
-func Generate(hosts []inventory.Host) (string, error) {
+func ListData(hosts []inventory.Host) (string, error) {
     inventory := make(map[string]map[string][]string)
 
     for _, host := range hosts {

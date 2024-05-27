@@ -47,7 +47,7 @@ func main() {
     }
 
     if *listPtr {
-        inventory, err := ansible.Generate(hosts)
+        inventory, err := ansible.ListData(hosts)
         if err != nil {
             log.Fatalf("error: %v", err)
         }
@@ -55,7 +55,7 @@ func main() {
     }
 
     if *sshPtr {
-        config, err := ssh.Generate(hosts, false)
+        config, err := ssh.ListConfig(hosts, false)
         if err != nil {
             log.Fatalf("error: %v", err)
         }

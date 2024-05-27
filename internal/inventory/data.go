@@ -74,6 +74,21 @@ func ListAllHosts() []Host {
     return append([]Host(nil), hosts...)
 }
 
+func GetAllHostNames() *[]string {
+    defer mu.Unlock()
+
+    if hosts == nil {
+        return nil
+    }
+
+    var hostnames []string
+
+    for _, host := range hosts {
+        hostnames = append(hostnames, host.Name)
+    }
+    return &hostnames
+}
+
 func GetHostByName(name string) *Host {
     mu.Lock()
     defer mu.Unlock()

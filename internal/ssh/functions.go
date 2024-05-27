@@ -28,7 +28,7 @@ Host {{ .Alias }}
 {{- end }}
 `
 
-func Generate(hosts []inventory.Host, windows bool) (string, error) {
+func ListConfig(hosts []inventory.Host, windows bool) (string, error) {
     t := template.New("ssh_config")
     t, err := t.Parse(sshConfigTemplate)
     if err != nil {
