@@ -27,6 +27,7 @@ func main() {
     hostPtr := flag.String("host", "", "Specify the host name")
     listPtr := flag.Bool("list", false, "List all hosts")
     groupPtr := flag.String("group", "", "Specify the group name")
+    groupsPtr := flag.Bool("groups", false, "List all groups")
     typePtr := flag.String("type", "", "Specify the type")
     sshPtr := flag.Bool("ssh", false, "Print ssh config file")
     version := flag.BoolP("version","v", false, "prints current version")
@@ -60,6 +61,11 @@ func main() {
             log.Fatalf("error: %v", err)
         }
         fmt.Println(config)
+    }
+
+    if *groupsPtr {
+        groups := inventory.GetAllGroups()
+        printAsJSON(groups)
     }
 
     if *hostPtr != "" {

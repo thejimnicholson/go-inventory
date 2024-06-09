@@ -1,0 +1,15 @@
+---
+- name: case1
+  alias: case1_alias
+  ip: 192.168.2.1
+  ssh:
+    skip: false
+    user: maint
+    key_path: default
+  meta:
+    type: hardware
+  groups:
+    - infrastructure
+  dns:
+    type: A
+    domain: foo.example.com

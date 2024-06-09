@@ -74,6 +74,29 @@ func ListAllHosts() []Host {
     return append([]Host(nil), hosts...)
 }
 
+func GetAllGroups() []string {
+    mu.Lock()
+    defer mu.Unlock()
+
+    if hosts == nil {
+        return nil
+    }
+
+    groupSet := make(map[string]struct{})
+    for _, host := range hosts {
+        for _, group := range host.Groups {
+            groupSet[group] = struct{}{}
+        }
+    }
+
+    groups := make([]string, 0, len(groupSet))
+    for group := range groupSet {
+        groups = append(groups, group)
+    }
+
+    return groups
+}
+
 func GetAllHostNames() *[]string {
     defer mu.Unlock()
 
@@ -88,6 +111,9 @@ func GetAllHostNames() *[]string {
     }
     return &hostnames
 }
+
+
+
 
 func GetHostByName(name string) *Host {
     mu.Lock()
