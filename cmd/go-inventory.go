@@ -9,6 +9,7 @@ import (
 	flag "github.com/spf13/pflag"
 
 	"go-inventory/internal/ansible"
+	"go-inventory/internal/etc"
 	"go-inventory/internal/inventory"
 	"go-inventory/internal/ssh"
 )
@@ -32,6 +33,7 @@ func main() {
     sshPtr := flag.Bool("ssh", false, "Print ssh config file")
     version := flag.BoolP("version","v", false, "prints current version")
 
+    etcPtr := flag.BoolP("etc", "e", false, "Generate /etc/hosts file")
 
     flag.Parse()
 
@@ -83,6 +85,10 @@ func main() {
     if *typePtr != "" {
         hosts := inventory.GetHostsByType(*typePtr)
         printAsJSON(hosts)
+    }
+
+    if *etcPtr {
+        fmt.Println(etc.GenerateHosts(hosts))
     }
 
 }
