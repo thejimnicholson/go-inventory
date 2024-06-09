@@ -64,6 +64,16 @@
     id: 107
   groups:
     - infrastructure
+- name: clock2
+  ip: 10.0.96.6
+  ssh:
+    user: jim
+    key_path: default
+  meta:
+    type: hardware
+  groups:
+    - pi
+    - debian
 - name: zyxel
   ip: 10.0.96.7
   ssh:
