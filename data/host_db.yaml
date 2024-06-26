@@ -134,9 +134,21 @@
   dns:
     type: A
     domain: home.thejimnicholson.com
+- name: bignas
+  ip: 10.0.96.12
+  ssh:
+    user: admin
+    key_path: default
+  groups:
+    - infrastructure
+    - storage
+  dns:
+    type: A
+    domain: home.thejimnicholson.com
 - name: pve3
   ip: 10.0.96.13
   ssh:
+    skip: true
     user: root
     key_path: default
   groups:
